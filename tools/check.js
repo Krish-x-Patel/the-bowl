@@ -27,6 +27,8 @@ const ok = (c, m) => { if (c) pass++; else { fail++; console.log('FAIL:', m); } 
     const broken = await p.evaluate(async () => { const r=[]; for (const i of document.querySelectorAll('img')) { i.loading='eager'; try { await i.decode(); } catch(e) { r.push(i.src); } } return r; });
     ok(broken.length === 0, 'broken images: ' + broken);
     ok((await p.locator('#status').textContent()) !== '', 'status text');
+    // Nothing may be invisible, even below the fold and before scrolling
+    ok(await p.evaluate(() => [...document.querySelectorAll('main *')].every(e => getComputedStyle(e).opacity !== '0')), vp.n + ' no hidden content');
     // Menu tabs: one panel at a time, clicking a tab switches it, bowl cards open the right tab
     ok(await p.$$eval('.panel', ps => ps.filter(x => !x.hidden).length === 1), vp.n + ' one menu panel shown');
     await p.click('#tab-sides'); ok(await p.$eval('#sides', x => !x.hidden), vp.n + ' sides tab works');
