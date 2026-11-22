@@ -59,7 +59,7 @@ MENU = [
   ("Bruce Cost ginger ale", "4.99", "", None, None),
  ]),
 ]
-# Most popular: Uber Eats "most liked" order, then the best-rated photo dish
+# Bowl cards (big photos): Uber Eats "most liked" order, then the best-rated photo dish
 POPULAR = [("Ramen", "#1 most liked"), ("Bibimbap", "#2 most liked"), ("Original Bowl", "#3 most liked"),
            ("Stir fry ramen bundle", "")]
 
@@ -68,42 +68,36 @@ e = html.escape
 
 def slug(s): return "".join(c if c.isalnum() else "-" for c in s.lower()).strip("-")
 
-def popular_html():
+def bowls_html():
     out = []
     for name, badge in POPULAR:
         n, price, desc, img, liked = ITEMS[name]
-        b = f'<span class="badge">{e(badge)}</span>' if badge else ''
-        lk = f'<span class="liked">{e(liked.replace("(", "· ").replace(")", " ratings"))}</span>' if liked else ''
-        out.append(f'''        <a class="pop" href="#item-{slug(n)}">
-          <span class="pop-img">{b}<img src="images/{img}.jpg" alt="{e(n)}" width="825" height="660" loading="lazy"></span>
-          <span class="pop-row"><span class="pop-name">{e(n)}</span><span class="pop-price">${price}</span></span>
+        b = f'<span class="tag">{e(badge)}</span>' if badge else ''
+        lk = f'<p class="lk">{e(liked.replace("(", "· ").replace(")", " ratings"))}</p>' if liked else ''
+        out.append(f'''        <a class="bowl" href="#item-{slug(n)}">
+          <span class="ph">{b}<img src="images/{img}.jpg" alt="{e(n)}" width="825" height="660" loading="lazy"></span>
+          <span class="meta"><h3>{e(n)}</h3><span class="pr">${price}</span></span>
+          <p>{e(desc)}</p>
           {lk}
         </a>''')
     return "\n".join(out)
 
-def menu_html():
-    cols = [[], []]
-    total = sum(len(g[2]) + 2 for g in MENU); acc = 0
-    for g in MENU:  # balance two desktop columns, keeping menu order
-        (cols[0] if acc < total / 2 else cols[1]).append(g); acc += len(g[2]) + 2
+def tabs_html():
+    return "\n".join(f'        <a class="tab" role="tab" href="#{gid}" id="tab-{gid}" aria-controls="{gid}" aria-selected="false">{e(t)}</a>' for gid, t, _ in MENU)
+
+def panels_html():
     out = []
-    for col in cols:
-        out.append('        <div class="menu-col">')
-        for gid, title, items in col:
-            out.append(f'          <div class="group" id="{gid}">\n            <h3>{e(title)}</h3>\n            <ul>')
-            for n, price, desc, img, liked in items:
-                th = f'<img class="thumb" src="images/{img}.jpg" alt="" width="56" height="56" loading="lazy">' if img else ''
-                d = f'<span class="desc">{e(desc)}</span>' if desc else ''
-                lk = f'<span class="lk">{e(liked)}</span>' if liked else ''
-                out.append(f'              <li id="item-{slug(n)}" class="{"has-thumb" if img else ""}">{th}<div class="row"><div class="top"><span class="name">{e(n)}</span><span class="dots" aria-hidden="true"></span><span class="price">${price}</span></div>{d}{lk}</div></li>')
-            out.append('            </ul>\n          </div>')
-        out.append('        </div>')
+    for gid, title, items in MENU:
+        out.append(f'      <div class="panel" id="{gid}" role="tabpanel" aria-labelledby="tab-{gid}">\n        <h3>{e(title)}</h3>\n        <ul>')
+        for n, price, desc, img, liked in items:
+            d = f'<span class="ds">{e(desc)}</span>' if desc else ''
+            lk = f'<span class="lk">{e(liked)}</span>' if liked else ''
+            out.append(f'          <li id="item-{slug(n)}"><span class="nm">{e(n)}</span><span class="pr">${price}</span>{d}{lk}</li>')
+        out.append('        </ul>\n      </div>')
     return "\n".join(out)
 
-chips = "\n".join(f'        <a href="#{gid}">{e(t)}</a>' for gid, t, _ in MENU)
-
 TEMPLATE = open('tools/template.html').read()
-page = (TEMPLATE.replace('{{POPULAR}}', popular_html()).replace('{{MENU}}', menu_html()).replace('{{CHIPS}}', chips)
+page = (TEMPLATE.replace('{{BOWLS}}', bowls_html()).replace('{{TABS}}', tabs_html()).replace('{{PANELS}}', panels_html())
         .replace('{{UBER}}', UBER).replace('{{MAPS}}', MAPS).replace('{{EMBED}}', EMBED).replace('{{TEL}}', TEL))
 assert '{{' not in page
 open('index.html', 'w').write(page)

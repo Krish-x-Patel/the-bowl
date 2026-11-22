@@ -7,24 +7,26 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{--paper:#fbfaf7;--card:#f3efe7;--ink:#221d1a;--muted:#6b625b;--pom:#b3261e;--line:#e6e0d6}
+  :root{--paper:#ffffff;--card:#f6f5f2;--ink:#111111;--muted:#6b6b6b;--pom:#111111;--line:#e9e7e2}
   @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){--paper:#181513;--card:#221e1b;--ink:#f2ece6;--muted:#b3a89f;--pom:#e5675b;--line:#342d28}
+    :root:not([data-theme="light"]){--paper:#111111;--card:#1b1b1b;--ink:#f4f4f2;--muted:#a3a3a3;--pom:#ffc21a;--line:#2a2a2a}
   }
-  :root[data-theme="dark"]{--paper:#181513;--card:#221e1b;--ink:#f2ece6;--muted:#b3a89f;--pom:#e5675b;--line:#342d28}
+  :root[data-theme="dark"]{--paper:#111111;--card:#1b1b1b;--ink:#f4f4f2;--muted:#a3a3a3;--pom:#ffc21a;--line:#2a2a2a}
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{background:var(--paper);color:var(--ink);font-family:"Outfit",system-ui,sans-serif;font-size:17px;line-height:1.65}
+  body{background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:17px;line-height:1.65}
   a{color:var(--pom)}
-  :focus-visible{outline:3px solid #f0a92c;outline-offset:3px;border-radius:6px}
+  :focus-visible{outline:3px solid #ffc21a;outline-offset:3px;border-radius:6px}
   header{border-bottom:1px solid var(--line)}
   header .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
   .wrap{max-width:760px;margin:0 auto;padding:0 20px}
   .brand{font-weight:800;font-size:22px;letter-spacing:-.03em;text-decoration:none;color:var(--ink)}
   nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 8px}
   nav.toc a{text-decoration:none;color:var(--ink);background:var(--card);padding:7px 14px;border-radius:999px;font-size:15px;font-weight:600}
+  h1,h2,.brand{font-family:Sora,Inter,sans-serif}
+  nav.toc a:hover{background:#ffc21a;color:#111}
   h1{font-size:clamp(34px,6vw,48px);font-weight:800;letter-spacing:-.035em;line-height:1.05;margin-top:40px}
   .updated{color:var(--muted);font-size:15px;margin-top:8px}
   section{padding:36px 0;border-bottom:1px solid var(--line);scroll-margin-top:16px}

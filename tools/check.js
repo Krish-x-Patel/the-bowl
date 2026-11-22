@@ -18,7 +18,7 @@ const ok = (c, m) => { if (c) pass++; else { fail++; console.log('FAIL:', m); } 
     ok(await p.$('meta[name=robots][content*=noindex]') !== null, 'noindex missing');
     const bad = await p.evaluate(() => [...document.querySelectorAll('a[href^="#"]')].map(a => a.getAttribute('href')).filter(h => h.length > 1 && !document.querySelector(h)));
     ok(bad.length === 0, 'broken in-page links: ' + bad);
-    const small = await p.evaluate(() => [...document.querySelectorAll('.btn,.chips a')].filter(e => e.offsetParent && e.getBoundingClientRect().height < 42).length);
+    const small = await p.evaluate(() => [...document.querySelectorAll('.btn,.tab')].filter(e => e.offsetParent && e.getBoundingClientRect().height < 42).length);
     ok(small === 0, vp.n + ' small tap targets: ' + small);
     ok(await p.$$eval('a[href^="tel:"]', a => a.length > 0 && a.every(x => x.getAttribute('href') === 'tel:+17707021129')), 'tel links');
     ok(await p.$$eval('a[target=_blank]', a => a.every(x => x.rel.includes('noopener'))), 'noopener');
@@ -26,8 +26,13 @@ const ok = (c, m) => { if (c) pass++; else { fail++; console.log('FAIL:', m); } 
     const broken = await p.evaluate(async () => { const r=[]; for (const i of document.querySelectorAll('img')) { i.loading='eager'; try { await i.decode(); } catch(e) { r.push(i.src); } } return r; });
     ok(broken.length === 0, 'broken images: ' + broken);
     ok((await p.locator('#status').textContent()) !== '', 'status text');
+    // Menu tabs: one panel at a time, clicking a tab switches it, bowl cards open the right tab
+    ok(await p.$$eval('.panel', ps => ps.filter(x => !x.hidden).length === 1), vp.n + ' one menu panel shown');
+    await p.click('#tab-sides'); ok(await p.$eval('#sides', x => !x.hidden), vp.n + ' sides tab works');
+    await p.click('.bowl >> nth=0'); await p.waitForTimeout(300); ok(await p.$eval('#item-ramen', x => x.offsetParent !== null), vp.n + ' bowl card opens its dish');
     const txt = await p.evaluate(() => document.body.innerText);
     ok(!/Falafel|429-8999|950 Cobb|halal/i.test(txt), 'leftover Falafel Cafe text');
+    if (SHOTS && vp.n !== 'small') { await p.evaluate(() => { document.querySelectorAll('.rv,.rv-img').forEach(e => e.classList.add('in')); scrollTo(0,0); }); await p.waitForTimeout(1200); }
     if (SHOTS && vp.n !== 'small') await p.screenshot({ path: `${SHOTS}/shot-${vp.n}.png`, fullPage: true });
     await p.close();
   }
