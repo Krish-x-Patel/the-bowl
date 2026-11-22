@@ -8,6 +8,9 @@
 <!-- Remove the next line to let search engines list the site. -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#ffffff">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="images/favicon-64.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -67,7 +70,10 @@
   nav.main{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   nav.main .wrap{display:flex;align-items:center;justify-content:space-between;height:var(--nav);gap:16px}
   .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:Sora,sans-serif;font-weight:800;font-size:20px;letter-spacing:-.02em}
-  .logo svg{flex:none}
+  .logo img{height:42px;width:auto}
+  @media (max-width:380px){ .logo img{height:28px} }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .logo img{filter:invert(1)} }
+  :root[data-theme="dark"] .logo img{filter:invert(1)}
   .links{display:flex;align-items:center;gap:28px;font-size:15px;font-weight:500}
   .links a{text-decoration:none;color:var(--muted)}
   .links a:hover{color:var(--ink)}
@@ -189,10 +195,7 @@
 
 <nav class="main" aria-label="Main">
   <div class="wrap">
-    <a class="logo" href="#top" aria-label="The Bowl, back to top">
-      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M3 13h24a12 12 0 0 1-24 0z" fill="currentColor"/><circle cx="15" cy="8" r="4" fill="#ffc21a"/></svg>
-      The Bowl
-    </a>
+    <a class="logo" href="#top" aria-label="The Bowl, back to top"><img src="images/logo.png" alt="The Bowl" width="143" height="42"></a>
     <div class="links">
       <a class="hide" href="#bowls">Bowls</a>
       <a class="hide" href="#menu">Menu</a>

@@ -16,6 +16,7 @@ const ok = (c, m) => { if (c) pass++; else { fail++; console.log('FAIL:', m); } 
     const sw = await p.evaluate(() => document.documentElement.scrollWidth);
     ok(sw <= vp.width, `${vp.n} horizontal scroll ${sw} > ${vp.width}`);
     ok(await p.$('meta[name=robots][content*=noindex]') !== null, 'noindex missing');
+    ok(await p.$('link[rel=icon]') !== null && await p.$('link[rel=apple-touch-icon]') !== null, 'favicon links');
     const bad = await p.evaluate(() => [...document.querySelectorAll('a[href^="#"]')].map(a => a.getAttribute('href')).filter(h => h.length > 1 && !document.querySelector(h)));
     ok(bad.length === 0, 'broken in-page links: ' + bad);
     const small = await p.evaluate(() => [...document.querySelectorAll('.btn,.tab')].filter(e => e.offsetParent && e.getBoundingClientRect().height < 42).length);
